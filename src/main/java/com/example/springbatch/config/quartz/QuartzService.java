@@ -31,9 +31,12 @@ public class QuartzService {
     public void register() throws Exception {
         String jobName = "launcherTestJob";
         String cron = "0/5 * * * * ?";
-        JobDetail jobDetail = this.createJobDeatail(jobName);
-        CronTrigger cronTrigger = this.createCronTrigger(jobName, cron);
-        scheduler.scheduleJob(jobDetail, cronTrigger);
+        scheduler.scheduleJob(this.createJobDeatail(jobName), this.createCronTrigger(jobName, cron));
+
+
+        jobName = "create_job1";
+        cron = "0/15 * * * * ?";
+        scheduler.scheduleJob(this.createJobDeatail(jobName), this.createCronTrigger(jobName, cron));
 
     }
 

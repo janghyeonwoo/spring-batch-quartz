@@ -1,17 +1,14 @@
 package com.example.springbatch.job.task;
 
 import lombok.RequiredArgsConstructor;
-import org.quartz.JobBuilder;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,13 +16,12 @@ public class MyJobOne {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean(name = "launcherTestJob")
+    @Bean
     public Job launcherTestJob() {
         return this.jobBuilderFactory.get("launcherTestJob")
                 /* step start */
                 .start(launcherTestStep1())
                 .next(launcherTestStep2())
-                .next(launcherTestStep3())
                 .build();
     }
 
@@ -58,14 +54,5 @@ public class MyJobOne {
                 })
                 .build();
     }
-
-
-    @Bean
-    public Step launcherTestStep3(){
-        return stepBuilderFactory.get("launcherTestStep3")
-                .tasklet(new MyTaskTwo())
-                .build();
-    }
-
 
 }

@@ -33,7 +33,7 @@ public class BatchJob1 {
 
 
 
-    @Bean
+    @Bean(name="create_job1")
     Job create_Job1(){
         return jobBuilderFactory.get("create_job1")
                 .start(create_Job1_Step1()).build();
