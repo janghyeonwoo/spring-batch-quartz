@@ -7,19 +7,19 @@ spring:
     jdbc:
       initialize-schema: always
 
-  quartz:
-    jdbc:
-      initialize-schema: always
-      #      schema: classpath:quartz-create.sql
-    scheduler-name: MyScheduler
-    job-store-type: jdbc
-    overwrite-existing-jobs: true
-    properties:
-      org:
-        quartz:
-          jobStore:
-            isClustered: true
-            useProperties: true
+#  quartz:
+#    jdbc:
+#      initialize-schema: always
+#      #      schema: classpath:quartz-create.sql
+#    scheduler-name: MyScheduler
+#    job-store-type: jdbc
+#    overwrite-existing-jobs: true
+#    properties:
+#      org:
+#        quartz:
+#          jobStore:
+#            isClustered: true
+#            useProperties: true
 
 
 
