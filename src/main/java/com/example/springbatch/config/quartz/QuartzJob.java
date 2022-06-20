@@ -42,6 +42,7 @@ public class QuartzJob extends QuartzJobBean implements InterruptableJob {
             jpb.addLong("currTime", System.currentTimeMillis());
             jpb.addString("version", "v1");
             jpb.addDate("date", new Date());
+            System.out.println("시작");
 
 
             //sync executor, non clustering 환경에서의 중복 실행 방지
