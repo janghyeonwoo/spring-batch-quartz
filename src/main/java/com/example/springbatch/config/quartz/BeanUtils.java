@@ -14,7 +14,6 @@ public class BeanUtils implements ApplicationContextAware {
    public void setApplicationContext(ApplicationContext applicationContext) {
       // TODO Auto-generated method stub
       context = applicationContext;
-      Job job = (Job) context.getBean("launcherTestJob");
    }
 
    public static <T> T getBean(Class<T> beanClass) {

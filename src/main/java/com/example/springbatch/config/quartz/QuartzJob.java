@@ -42,9 +42,6 @@ public class QuartzJob extends QuartzJobBean implements InterruptableJob {
             jpb.addLong("currTime", System.currentTimeMillis());
             jpb.addString("version", "v1");
             jpb.addDate("date", new Date());
-            System.out.println("시작");
-            System.out.println("시작");
-
 
             //sync executor, non clustering 환경에서의 중복 실행 방지
             //1. sync 방식일 경우 scheduler.getCurrentlyExecutingJobs() 로 현재 실행중인 schedule 확인이 가능. 이를 이용하여 분기처리

@@ -29,14 +29,14 @@ public class QuartzService {
 
     // 스케줄러에 스케줄 등록
     public void register() throws Exception {
-        String jobName = "launcherTestJob";
+        String jobName = "myJobOne_Job1";
         String cron = "0/5 * * * * ?";
         scheduler.scheduleJob(this.createJobDeatail(jobName), this.createCronTrigger(jobName, cron));
 
 
-        jobName = "create_job1";
-        cron = "0/15 * * * * ?";
-        scheduler.scheduleJob(this.createJobDeatail(jobName), this.createCronTrigger(jobName, cron));
+//        jobName = "create_job1";
+//        cron = "0/15 * * * * ?";
+//        scheduler.scheduleJob(this.createJobDeatail(jobName), this.createCronTrigger(jobName, cron));
 
     }
 
