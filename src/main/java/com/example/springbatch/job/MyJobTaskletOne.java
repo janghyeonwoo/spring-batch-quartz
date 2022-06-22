@@ -1,4 +1,4 @@
-package com.example.springbatch.job.task;
+package com.example.springbatch.job;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.*;
@@ -12,30 +12,26 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
-public class MyJobOne {
+public class MyJobTaskletOne {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job launcherTestJob() {
-        return this.jobBuilderFactory.get("launcherTestJob")
-                /* step start */
-                .start(launcherTestStep1())
-                .next(launcherTestStep2())
+    public Job myJobTaskletOne_Job1() {
+        return this.jobBuilderFactory.get("myJobTaskletOne_Job1")
+                .start(myJobTaskletOne_Job1_Step1())
+                .next(myJobTaskletOne_Job1_Step2())
                 .build();
     }
 
     @Bean
-    public Step launcherTestStep1() {
-        return stepBuilderFactory.get("launcherTestStep1")
+    public Step myJobTaskletOne_Job1_Step1() {
+        return stepBuilderFactory.get("myJobTaskletOne_Job1_Step1")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("launcherTestStep1");
-
-                        // 동기 : 잡이 모두 끝난 후 결과 리턴
-                        // 비동기 : 일단 결과를 내려주고, 내부적으로 배치 실행
-                        Thread.sleep(3000);
+                        System.out.println("myJobTaskletOne_Job1_Step1");
+//                        if(1==1) throw  new RuntimeException();
                         return RepeatStatus.FINISHED;
                     }
                 })
@@ -43,12 +39,12 @@ public class MyJobOne {
     }
 
     @Bean
-    public Step launcherTestStep2() {
-        return stepBuilderFactory.get("launcherTestStep2")
+    public Step myJobTaskletOne_Job1_Step2() {
+        return stepBuilderFactory.get("myJobTaskletOne_Job1_Step2")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-                        System.out.println("launcherTestStep2");
+                        System.out.println("myJobTaskletOne_Job1_Step2");
                         return RepeatStatus.FINISHED;
                     }
                 })

@@ -1,9 +1,8 @@
 package com.example.springbatch.job;
 
-import com.example.springbatch.entity.Market;
+import com.example.springbatch.entity.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Entity;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -26,24 +25,24 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration // Spring batch의 모든 Job은 Configuration으로 등록해야한다.
-public class BatchJob1 {
+public class MyJobTwo {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
 
 
 
-    @Bean(name="create_job1")
-    Job create_Job1(){
-        return jobBuilderFactory.get("create_job1")
-                .start(create_Job1_Step1()).build();
+    @Bean
+    Job myJobTwo_job1(){
+        return jobBuilderFactory.get("myJobTwo_job1")
+                .start(myJobTwo_job1_step1()).build();
     }
 
     @Bean
     @JobScope
-    Step create_Job1_Step1(){
-        return stepBuilderFactory.get("create_Job1_Step1")
-                .<Market,Market>chunk(10)
+    Step myJobTwo_job1_step1(){
+        return stepBuilderFactory.get("myJobTwo_job1_step1")
+                .<Product, Product>chunk(10)
                 .reader(reader(null))
                 .processor(processor(null))
                 .writer(writer(null))
@@ -54,16 +53,14 @@ public class BatchJob1 {
 
     @Bean
     @StepScope
-    public JpaPagingItemReader<Market> reader(@Value("#{jobParameters[requestDate]}") String requestDate){
-      log.info("==========> reader Value : {}" , requestDate );
-
-        Map<String,Object> parameterValues = new HashMap<>();
+    public JpaPagingItemReader<Product> reader(@Value("#{jobParameters[requestDate]}") String requestDate){
+        log.info("[Product Reader start!] : {} ", requestDate);
+        Map<String, Object> parameterValues = new HashMap<>();
         parameterValues.put("price", 1000);
-
-        return new JpaPagingItemReaderBuilder<Market>()
+        return new JpaPagingItemReaderBuilder<Product>()
                 .pageSize(10)
                 .parameterValues(parameterValues)
-                .queryString("SELECT m FROM Market m WHERE m.price >= : price")
+                .queryString("SELECT m FROM Product m WHERE m.price >= : price")
                 .entityManagerFactory(entityManagerFactory)
                 .name("JpaPagingItemReader")
                 .build();
@@ -71,12 +68,12 @@ public class BatchJob1 {
 
     @Bean
     @JobScope
-    public ItemProcessor <Market, Market> processor(@Value("#{jobParameters[requestDate]}") String requestDate){
-        return new ItemProcessor<Market, Market>() {
+    public ItemProcessor <Product, Product> processor(@Value("#{jobParameters[requestDate]}") String requestDate){
+        return new ItemProcessor<Product, Product>() {
             @Override
-            public Market process(Market item) throws Exception {
-                log.info("==> processor Market : {} ", item);
-                item.setName("new_" + item.getName());
+            public Product process(Product item) throws Exception {
+                log.info("[Product Process start!] : {} ", item);
+                item.setName(String.format("%s_%s_%s", "pooney" ,requestDate, item.getName()));
                 return item;
             }
         };
@@ -84,8 +81,8 @@ public class BatchJob1 {
 
     @Bean
     @JobScope
-    public JpaItemWriter <Market> writer(@Value("#{jobParameters[requestDate]}") String requestDate){
-        log.info("==> writer value : {}", requestDate);
-        return new JpaItemWriterBuilder<Market>().entityManagerFactory(entityManagerFactory).build();
+    public JpaItemWriter <Product> writer(@Value("#{jobParameters[requestDate]}") String requestDate){
+        log.info("[Product Writer start!] : {} ", requestDate);
+        return new JpaItemWriterBuilder<Product>().entityManagerFactory(entityManagerFactory).build();
     }
 }
