@@ -32,7 +32,7 @@ public class MyJobTwo {
 
 
 
-    @Bean
+    @Bean(name = "myJobTwo_job1")
     Job myJobTwo_job1(){
         return jobBuilderFactory.get("myJobTwo_job1")
                 .start(myJobTwo_job1_step1()).build();

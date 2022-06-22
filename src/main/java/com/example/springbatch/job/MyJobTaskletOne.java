@@ -16,7 +16,7 @@ public class MyJobTaskletOne {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
-    @Bean
+    @Bean(name =  "myJobTaskletOne_Job1")
     public Job myJobTaskletOne_Job1() {
         return this.jobBuilderFactory.get("myJobTaskletOne_Job1")
                 .start(myJobTaskletOne_Job1_Step1())
