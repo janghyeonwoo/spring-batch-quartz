@@ -37,7 +37,6 @@ public class QuartzJob implements Job {
         market.setName(String.format("pooney_%s", dataMap.get("date")));
         market.setPrice(3000);
         marketRepository.save(market);
-
     }
 
 

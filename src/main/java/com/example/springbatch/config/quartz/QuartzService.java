@@ -1,18 +1,12 @@
 package com.example.springbatch.config.quartz;
 
-import com.example.springbatch.job.QuartzJob;
+import com.example.springbatch.job.QuartzBatchJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 @Slf4j
@@ -20,19 +14,20 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class QuartzService {
     private final Scheduler scheduler;
+    public static final String JOB_ANME = "JOB_NAME";
 
     @PostConstruct
     public void init() {
         try {
             scheduler.clear();
-            scheduler.getListenerManager().addJobListener(new QuartzJobListner());
-            scheduler.getListenerManager().addTriggerListener(new QuartzTriggerListener());
+//            scheduler.getListenerManager().addJobListener(new QuartzJobListner());
+//            scheduler.getListenerManager().addTriggerListener(new QuartzTriggerListener());
 
 
-            Map paramsMap = new HashMap<>();
-            paramsMap.put("executeCount", 1);
-            paramsMap.put("date", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            addJob(QuartzJob.class, "QuartzJob", "Quartz Job 입니다", paramsMap, "0/1 * * * * ?");
+//            addJob(QuartzJob.class, "QuartzJob", "Quartz Job 입니다", paramsMap, "0/1 * * * * ?");
+            addJob(QuartzBatchJob.class, "createJob1", "createJob1 입니다", null , "0/1 * * * * ?");
+            addJob(QuartzBatchJob.class, "createJob2", "createJob2 입니다", null , "0/1 * * * * ?");
+
 
         } catch (Exception e){
             log.error("addJob error  : {}", e);
@@ -52,7 +47,9 @@ public class QuartzService {
     //JobDetail 생성
     public <T extends Job> JobDetail buildJobDetail(Class<? extends Job> job, String name, String desc, Map paramsMap) {
         JobDataMap jobDataMap = new JobDataMap();
-        jobDataMap.putAll(paramsMap);
+        jobDataMap.put(JOB_ANME, name);
+        jobDataMap.put("executeCount", 1);
+
 
         return JobBuilder
                 .newJob(job)
